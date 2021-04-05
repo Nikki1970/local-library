@@ -3,7 +3,6 @@ from . import views
 
 
 urlpatterns = [
-    path('catalog/', include('catalog.urls')),
     path('', views.index, name='index'),
 ]
 
