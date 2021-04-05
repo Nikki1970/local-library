@@ -37,7 +37,7 @@ class BookListView(generic.ListView):
 
 class BookListView(generic.ListView):
     model = Book
-
+    paginate_by = 2
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get the context
         context = super(BookListView, self).get_context_data(**kwargs)
@@ -47,3 +47,4 @@ class BookListView(generic.ListView):
 
 class BookDetailView(generic.DetailView):
     model = Book
+    
