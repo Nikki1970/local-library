@@ -25,7 +25,7 @@ SECRET_KEY = '(u-9b3t&ue1b58#kd^8daapor%!c1$+l^9gfv3t(&6#34z2mgv'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['svn-locallibrary.herokuapp.com', '127.0.0.1']
 
 
 # Application definition
