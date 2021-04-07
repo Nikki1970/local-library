@@ -1,12 +1,14 @@
-from django.shortcuts import render
-from django.http import HttpResponse
+
 # Create your views here.
 from catalog.models import Book, Author, BookInstance, Genre
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 import datetime
+
+from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponseRedirect
 from django.urls import reverse
-from catalog.forms import RenewBookModelForm
+from catalog.forms import RenewBookForm
 from django.contrib.auth.decorators import login_required, permission_required
 
 
@@ -76,17 +78,14 @@ class LoanedBooksByUserListView(LoginRequiredMixin,generic.ListView):
     def get_queryset(self):
         return BookInstance.objects.filter(borrower=self.request.user).filter(status__exact='o').order_by('due_back')
 
-@login_required
-@permission_required('catalog.can_mark_returned', raise_exception=True)
 def renew_book_librarian(request, pk):
-    """View function for renewing a specific BookInstance by librarian."""
     book_instance = get_object_or_404(BookInstance, pk=pk)
 
     # If this is a POST request then process the Form data
     if request.method == 'POST':
 
         # Create a form instance and populate it with data from the request (binding):
-        form = RenewBookModelForm(request.POST)
+        form = RenewBookForm(request.POST)
 
         # Check if the form is valid:
         if form.is_valid():
@@ -95,12 +94,12 @@ def renew_book_librarian(request, pk):
             book_instance.save()
 
             # redirect to a new URL:
-            return HttpResponseRedirect(reverse('/') )
+            return HttpResponseRedirect(reverse('all-borrowed') )
 
     # If this is a GET (or any other method) create the default form.
     else:
         proposed_renewal_date = datetime.date.today() + datetime.timedelta(weeks=3)
-        form = RenewBookModelForm(initial={'due_back': proposed_renewal_date})
+        form = RenewBookForm(initial={'renewal_date': proposed_renewal_date})
 
     context = {
         'form': form,
