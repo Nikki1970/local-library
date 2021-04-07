@@ -3,13 +3,12 @@ from django.http import HttpResponse
 # Create your views here.
 from catalog.models import Book, Author, BookInstance, Genre
 from django.contrib.auth.mixins import LoginRequiredMixin
-<<<<<<< HEAD
+
 import datetime
 from django.urls import reverse
 from catalog.forms import RenewBookModelForm
 from django.contrib.auth.decorators import login_required, permission_required
-=======
->>>>>>> parent of 59ab14a... Modify the renewal date of the bookinstance
+
 
 
 def index(request):
@@ -75,7 +74,6 @@ class LoanedBooksByUserListView(LoginRequiredMixin,generic.ListView):
     paginate_by = 10
 
     def get_queryset(self):
-<<<<<<< HEAD
         return BookInstance.objects.filter(borrower=self.request.user).filter(status__exact='o').order_by('due_back')
 
 @login_required
@@ -127,6 +125,3 @@ class AuthorUpdate(UpdateView):
 class AuthorDelete(DeleteView):
     model = Author
     success_url = reverse_lazy('authors')
-=======
-        return BookInstance.objects.filter(borrower=self.request.user).filter(status__exact='o').order_by('due_back')
->>>>>>> parent of 59ab14a... Modify the renewal date of the bookinstance
